@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <title>Trip Prognozeri WC 2026</title>
+    <style>
+        :root {
+            --blue-gradient: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            --bg-body: #0f172a;
+            --text-color: #ffffff;
+            --accent-gold: #fbbf24;
+        }
+
+        body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #1e293b, #0f172a); color: var(--text-color); margin: 0; padding: 1px; }
+        header { background: var(--blue-gradient); color: white; padding: 1px; text-align: center; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--accent-gold); }
+        .grid-container { display: grid; gap: 5px; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 250px 270px 80px; }
+        .box { background: rgba(30, 58, 138, 0.6); backdrop-filter: blur(10px); padding: 5px; border-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.2); color: white; overflow-y: auto; }
+        h2 { margin: 0 0 1px 0; font-size: 10px; color: var(--accent-gold); border-bottom: 5px solid rgba(255,255,255,0.2); padding-bottom: 0px; text-transform: uppercase; }
+        
+        /* Centriranje podataka u tabeli */
+        table { width:100%; border-collapse: collapse; color: white; }
+        table td, table th { text-align: center; }
+        table th:first-child, table td:first-child { text-align: left; }
+        
+        .tabela { grid-column: 2; grid-row: 1; }
+        .h2h { grid-column: 2; grid-row: 2; }
+        .dnevne { grid-column: 1; grid-row: 1 / 3; }
+        .dugorocne { grid-column: 3; grid-row: 1; }
+        .istorija { grid-column: 3; grid-row: 2; }
+        .zanimljivosti { grid-column: 1 / 4; grid-row: 3; }
+
+        .match-card { background: rgba(255,255,255,0.05); padding: 6px; border-radius: 4px; margin-bottom: 10px; }
+        .prog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 5px; }
+        .p-box { background: rgba(0,0,0,0.2); text-align: center; padding: 4px; border-radius: 3px; font-size: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .score-win { color: #4ade80; border: 1px solid #4ade80; font-weight: bold; background: rgba(74, 222, 128, 0.1); }
+        
+        /* Novi stilovi za popunjene boksove */
+        .long-term-grid { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 5px; }
+        .long-term-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; font-size: 11px; display: flex; justify-content: space-between; align-items: center; }
+        .h2h-grid { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 5px; }
+        .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
+        
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: auto !important;
+            }
+            .tabela, .h2h, .dugorocne, .dnevne, .istorija, .zanimljivosti {
+                grid-column: 1 !important;
+                grid-row: auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header><h1>⚽ TRIP PROGNOZERI WC 2026 🏆</h1></header>
+
+    <div class="grid-container">
+        <div class="box tabela">
+            <h2>📊 TABELA</h2>
+            <table>
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--accent-gold); font-size: 12px;">
+                        <th style="text-align:left;">Igrač</th><th>Prog</th><th>H2H</th><th>Ukupno</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-body"></tbody>
+            </table>
+        </div>
+        <div class="box h2h" id="h2h-box"><h2>⚔️ H2H DUELI</h2></div>
+        <div class="box dugorocne"><h2>🏆 DUGOROČNE PROGNOZE</h2><div id="dugorocne-lista"></div></div>
+        <div class="box dnevne" id="dnevne-prognoze"><h2>⚽ DNEVNE PROGNOZE</h2></div>
+        <div class="box istorija"><h2>📜 ISTORIJA PROGNOZA</h2></div>
+        <div class="box zanimljivosti" id="zanimljivosti"><h2>💡 ZANIMLJIVOSTI</h2></div>
+    </div>
+
+    <script>
+        const TRENUTNO_KOLO = 3; 
+
+        // --- KONFIGURACIJA ZA KRAJ TURNIRA ---
+        const pobednikTurnira = ""; 
+        const najboljiStrelac = ""; 
+        const strelci2i3 = ["", ""]; 
+        // ------------------------------------
+
+        const igraci = [
+            { ime: "Deja", progBodovi: 0, h2hBodovi: 0, tim: "🇧🇷 Brazil", strelac: "⚡ Mbappe" },
+            { ime: "Prenta", progBodovi: 0, h2hBodovi: 0, tim: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Engleska", strelac: "🎯 Kane" },
+            { ime: "Suvi", progBodovi: 0, h2hBodovi: 0, tim: "🇪🇸 Španija", strelac: "🐐 Messi" },
+            { ime: "Ivica", progBodovi: 0, h2hBodovi: 0, tim: "🇫🇷 Francuska", strelac: "⚽ Gakpo" },
+            { ime: "Aca", progBodovi: 0, h2hBodovi: 0, tim: "🇪🇸 Španija", strelac: "🌟 Yamal" },
+            { ime: "Nemanja", progBodovi: 0, h2hBodovi: 0, tim: "🇧🇷 Brazil", strelac: "⚽ Ronaldo" }
+        ];
+
+        const utakmiceKola = {
+            1: [ 
+                { par: "11.06. Meksiko-J.Afrika", stvarni: [2, 0], prog: { "Deja": [2, 0], "Prenta": [2, 0], "Suvi": [3, 0], "Ivica": [3, 1], "Aca": [3, 0], "Nemanja": [1, 0] } },
+                { par: "11.06. J.Koreja-Češka", stvarni: [2, 1], prog: { "Deja": [2, 1], "Prenta": [1, 0], "Suvi": [1, 1], "Ivica": [1, 2], "Aca": [0, 2], "Nemanja": [1, 1] } }
+            ],
+            2: [ 
+                { par: "12.06. Kanada-BiH", stvarni: [1, 1], prog: { "Deja": [1, 1], "Prenta": [1, 1], "Suvi": [2, 1], "Ivica": [1, 2], "Aca": [1, 1], "Nemanja": [1, 2] } },
+                { par: "12.06. USA-Paragvaj", stvarni: [4, 1], prog: { "Deja": [2, 1], "Prenta": [1, 0], "Suvi": [2, 1], "Ivica": [2, 1], "Aca": [2, 0], "Nemanja": [2, 0] } }
+            ],
+            3: [ 
+                { par: "13.06. Katar-Švajcarska", stvarni: [0, 1], prog: { "Deja": [0, 4], "Prenta": [0, 3], "Suvi": [0, 3], "Ivica": [0, 2], "Aca": [0, 4], "Nemanja": [0, 3] } },
+                { par: "13.06. Brazil-Maroko", stvarni: [-1, -1], prog: { "Deja": [1, 2], "Prenta": [2, 1], "Suvi": [2, 1], "Ivica": [2, 0], "Aca": [2, 0], "Nemanja": [3, 1] } },
+                { par: "13.06. Haiti-Škotska", stvarni: [-1, -1], prog: { "Deja": [0, 1], "Prenta": [0, 3], "Suvi": [0, 2], "Ivica": [0, 2], "Aca": [0, 2], "Nemanja": [0, 3] } },
+                { par: "13.06. Australija-Turska", stvarni: [-1, -1], prog: { "Deja": [0, 2], "Prenta": [0, 1], "Suvi": [1, 2], "Ivica": [1, 2], "Aca": [1, 3], "Nemanja": [0, 2] } }
+            ]
+        };
+
+        const h2hRaspored = {
+            1: [["Ivica", "Prenta"], ["Deja", "Nemanja"], ["Suvi", "Aca"]],
+            2: [["Prenta", "Aca"], ["Nemanja", "Suvi"], ["Ivica", "Deja"]],
+            3: [["Deja", "Prenta"], ["Suvi", "Ivica"], ["Aca", "Nemanja"]],
+            4: [["Prenta", "Nemanja"], ["Ivica", "Aca"], ["Deja", "Suvi"]],
+            5: [["Suvi", "Prenta"], ["Aca", "Deja"], ["Nemanja", "Ivica"]]
+        };
+
+        function izracunajPoene(p, s) {
+            if (p[0] === p[1] && s[0] === s[1] && p[0] === s[0]) return 11;
+            if (p[0] === s[0] && p[1] === s[1]) return 10;
+            let pRaz = p[0] - p[1], sRaz = s[0] - s[1];
+            if (pRaz === 0 && sRaz === 0) return 5;
+            if ((pRaz > 0 && sRaz > 0) || (pRaz < 0 && sRaz < 0)) return 4;
+            return 0;
+        }
+
+        function renderUI() {
+            const tbody = document.getElementById('tabela-body');
+            igraci.forEach(i => { 
+                i.progBodovi = 0; 
+                i.h2hBodovi = 0; 
+                i.extraBodovi = 0; 
+
+                if (pobednikTurnira && i.tim.includes(pobednikTurnira)) i.extraBodovi += 15;
+                if (najboljiStrelac && i.strelac.includes(najboljiStrelac)) i.extraBodovi += 12;
+                else if (strelci2i3.some(s => s !== "" && i.strelac.includes(s))) i.extraBodovi += 6;
+            });
+
+            igraci.forEach(i => {
+                for(let k=1; k<=TRENUTNO_KOLO; k++){
+                    utakmiceKola[k].forEach(u => { 
+                        if(u.prog[i.ime] && u.stvarni[0] >= 0) i.progBodovi += izracunajPoene(u.prog[i.ime], u.stvarni); 
+                    });
+                }
+            });
+
+            for(let k=1; k<=TRENUTNO_KOLO; k++){
+                if(utakmiceKola[k].some(u => u.stvarni[0] >= 0)) {
+                    h2hRaspored[k].forEach(duel => {
+                        let i1 = igraci.find(i => i.ime === duel[0]);
+                        let i2 = igraci.find(i => i.ime === duel[1]);
+                        let b1 = 0, b2 = 0;
+                        utakmiceKola[k].forEach(u => {
+                            if(u.stvarni[0] >= 0) {
+                                b1 += izracunajPoene(u.prog[i1.ime], u.stvarni);
+                                b2 += izracunajPoene(u.prog[i2.ime], u.stvarni);
+                            }
+                        });
+                        if(b1 > b2) i1.h2hBodovi += 3;
+                        else if(b2 > b1) i2.h2hBodovi += 3;
+                        else { i1.h2hBodovi += 1; i2.h2hBodovi += 1; }
+                    });
+                }
+            }
+
+            igraci.sort((a, b) => (b.progBodovi + b.h2hBodovi + b.extraBodovi) - (a.progBodovi + a.h2hBodovi + a.extraBodovi));
+            tbody.innerHTML = "";
+            igraci.forEach(i => { tbody.innerHTML += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.1);"><td style="padding: 5px 0;">${i.ime}</td><td>${i.progBodovi}</td><td>${i.h2hBodovi}</td><td style="color:var(--accent-gold); font-weight:bold;">${i.progBodovi + i.h2hBodovi + i.extraBodovi}</td></tr>`; });
+
+            const h2hBox = document.getElementById('h2h-box');
+            h2hBox.innerHTML = '<h2>⚔️ H2H DUELI</h2><div class="h2h-grid"></div>';
+            const h2hGrid = h2hBox.querySelector('.h2h-grid');
+            
+            h2hGrid.style.display = "grid";
+            h2hGrid.style.gridTemplateColumns = "1fr auto 1fr";
+            h2hGrid.style.alignItems = "center";
+            h2hGrid.style.gap = "5px";
+
+            h2hRaspored[TRENUTNO_KOLO].forEach(duel => {
+                let bodoviI1 = 0;
+                let bodoviI2 = 0;
+                
+                utakmiceKola[TRENUTNO_KOLO].forEach(u => {
+                    if (u.stvarni[0] >= 0) {
+                        bodoviI1 += izracunajPoene(u.prog[duel[0]], u.stvarni);
+                        bodoviI2 += izracunajPoene(u.prog[duel[1]], u.stvarni);
+                    }
+                });
+
+                h2hGrid.innerHTML += `
+                    <div style="text-align: right; font-size: 11px;">${duel[0]} <span style="color:var(--accent-gold); font-weight:bold;">${bodoviI1}</span></div>
+                    <div style="text-align: center; font-size: 14px;">⚔️</div>
+                    <div style="text-align: left; font-size: 11px;"><span style="color:var(--accent-gold); font-weight:bold;">${bodoviI2}</span> ${duel[1]}</div>
+                `;
+            });
+
+            const dBox = document.getElementById('dnevne-prognoze');
+            utakmiceKola[TRENUTNO_KOLO].forEach(u => {
+                let stvarniPrikaz = (u.stvarni[0] < 0) ? "-:-" : u.stvarni.join(':');
+                let html = `<div class="match-card"><div style="color:var(--accent-gold); font-size:10px; font-weight:bold;">${u.par} (${stvarniPrikaz})</div><div class="prog-grid">`;
+                igraci.forEach(igrac => {
+                    let p = u.prog[igrac.ime];
+                    let progPrikaz = p ? p.join(':') : "-";
+                    let isFull = p && u.stvarni[0] >= 0 && (p[0] === u.stvarni[0] && p[1] === u.stvarni[1]);
+                    html += `<div class="p-box ${isFull ? 'score-win' : ''}"><div style="opacity:0.7">${igrac.ime}</div><b>${progPrikaz}</b></div>`;
+                });
+                dBox.innerHTML += html + `</div></div>`;
+            });
+
+            const histBox = document.querySelector('.box.istorija');
+            histBox.innerHTML = '<h2>📜 ISTORIJA PROGNOZA</h2><div class="hist-container" style="padding:5px;"></div>';
+            const histContainer = histBox.querySelector('.hist-container');
+
+            for(let k = 1; k < TRENUTNO_KOLO; k++) {
+                histContainer.innerHTML += `<div style="color:var(--accent-gold); font-weight:bold; font-size:11px; margin-top:10px; border-bottom:1px solid var(--accent-gold);">KOLO ${k}</div>`;
+                
+                utakmiceKola[k].forEach(u => {
+                    histContainer.innerHTML += `
+                        <div style="font-size:10px; opacity:0.8; margin-top:3px;">
+                            ${u.par}: <b>${u.stvarni.join(':')}</b>
+                        </div>`;
+                });
+
+                h2hRaspored[k].forEach(duel => {
+                    let b1 = 0, b2 = 0;
+                    utakmiceKola[k].forEach(u => {
+                        b1 += izracunajPoene(u.prog[duel[0]], u.stvarni);
+                        b2 += izracunajPoene(u.prog[duel[1]], u.stvarni);
+                    });
+                    
+                    histContainer.innerHTML += `
+                        <div style="display:flex; justify-content:space-between; font-size:10px; margin:2px 0; background:rgba(255,255,255,0.03); padding:2px;">
+                            <span>${duel[0]}</span>
+                            <span>${b1} ⚔️ ${b2}</span>
+                            <span>${duel[1]}</span>
+                        </div>`;
+                });
+            }
+
+            document.getElementById('zanimljivosti').innerHTML = `<h2>💡 ZANIMLJIVOSTI</h2><ul style="list-style:none; padding:0; font-size:12px; display:flex; gap:15px;">
+                <li><b>😎 Deja:</b> Neverovatna forma!</li>
+                <li><b>⚽ Nemanja:</b> Vernost tradiciji.</li>
+                <li><b>😴 Suvi:</b> Još spava.</li>
+                <li><b>🍀 Aca:</b> Čista sreća.</li>
+                <li><b>🔄 Ivica:</b> Kad se okrene ekran prvi je!</li>
+                <li><b>👑 Prenta:</b> To je on!</li>
+            </ul>`;
+
+            document.getElementById('dugorocne-lista').innerHTML = `
+                <div class="long-term-grid">
+                    ${igraci.map(i => `
+                        <div class="long-term-item" style="text-transform: uppercase;">
+                            <span style="font-weight:bold; flex: 1;">${i.ime}</span>
+                            <span style="flex: 1; text-align: center;">${i.tim}</span>
+                            <span style="flex: 1; text-align: right;">${i.strelac}</span>
+                        </div>
+                    `).join('')}
+                </div>`;
+        }
+        window.onload = renderUI;
+    </script>
+</body>
+</html>
