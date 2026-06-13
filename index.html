@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="sr">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta charset="UTF-8">
     <title>Trip Prognozeri WC 2026</title>
     <style>
@@ -41,15 +43,16 @@
         .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
         
         @media (max-width: 768px) {
-            .grid-container {
-                grid-template-columns: 1fr !important;
-                grid-template-rows: auto !important;
-            }
-            .tabela, .h2h, .dugorocne, .dnevne, .istorija, .zanimljivosti {
-                grid-column: 1 !important;
-                grid-row: auto !important;
-            }
-        }
+    .grid-container {
+        grid-template-columns: 1fr !important; /* Ovde dodaj 'important' */
+        grid-template-rows: auto !important;
+    }
+    .tabela, .h2h, .dugorocne, .dnevne {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+}
+
     </style>
 </head>
 <body>
