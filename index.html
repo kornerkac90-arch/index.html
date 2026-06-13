@@ -44,32 +44,38 @@
         
         
 @media (max-width: 768px) {
-    /* Font smanjen na 10px za maksimalnu preglednost */
+    /* Sprečavamo da bilo šta bude šire od samog ekrana telefona */
     body {
-        font-size: 10px !important;
-        line-height: 1.2 !important;
+        width: 100vw;
+        overflow-x: hidden;
+        margin: 0;
+        padding: 5px !important;
+        font-size: 10px !important; /* Font ide na 10px svuda */
     }
 
-    /* Još manje margine da se dobije prostor */
+    /* Forsiramo da kontejner bude jedna kolona koja ne prelazi širinu */
     .grid-container {
-        padding: 2px !important;
-        gap: 4px !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important; /* Samo jedna kolona */
+        width: 100% !important;
+        gap: 5px !important;
+        padding: 0 !important;
     }
 
-    .box {
-        padding: 4px !important;
+    /* Svaka tvoja sekcija (tabela, H2H, itd.) se širi na 100% */
+    .box, .tabela, .h2h, .dugorocne, .dnevne {
+        width: 95% !important; /* Malo manje od 100% da ima lufta */
+        margin: 0 auto !important; /* Centriranje */
+        padding: 5px !important;
+        box-sizing: border-box;
     }
 
+    /* Naslov da ne bude prevelik */
     h1 {
-        font-size: 16px !important;
-        margin: 5px 0 !important;
-    }
-
-    /* Ako imaš tabele unutar boksova, smanji padding i njima */
-    table {
-        font-size: 10px !important;
+        font-size: 14px !important;
     }
 }
+
 
     </style>
 </head>
