@@ -43,15 +43,28 @@
         .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
         
         @media (max-width: 768px) {
-    .grid-container {
-        grid-template-columns: 1fr !important; /* Ovde dodaj 'important' */
-        grid-template-rows: auto !important;
+    /* Smanjujemo font da sve stane lepo */
+    body {
+        font-size: 12px;
     }
-    .tabela, .h2h, .dugorocne, .dnevne {
-        grid-column: 1 !important;
-        grid-row: auto !important;
+
+    /* Dodajemo mali razmak oko tabela da ne lepe za ivice */
+    .grid-container {
+        padding: 5px !important;
+        gap: 8px !important;
+    }
+
+    /* Smanjujemo padding unutar kutija */
+    .box {
+        padding: 8px !important;
+    }
+
+    /* Naslov smanjujemo da ne zauzima pola ekrana */
+    h1 {
+        font-size: 18px !important;
     }
 }
+
 
     </style>
 </head>
