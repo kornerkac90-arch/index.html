@@ -42,29 +42,34 @@
         .h2h-grid { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 5px; }
         .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
         
-        @media (max-width: 768px) {
-    /* Smanjujemo font da sve stane lepo */
+        
+@media (max-width: 768px) {
+    /* Font smanjen na 10px za maksimalnu preglednost */
     body {
-        font-size: 12px;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
     }
 
-    /* Dodajemo mali razmak oko tabela da ne lepe za ivice */
+    /* Još manje margine da se dobije prostor */
     .grid-container {
-        padding: 5px !important;
-        gap: 8px !important;
+        padding: 2px !important;
+        gap: 4px !important;
     }
 
-    /* Smanjujemo padding unutar kutija */
     .box {
-        padding: 8px !important;
+        padding: 4px !important;
     }
 
-    /* Naslov smanjujemo da ne zauzima pola ekrana */
     h1 {
-        font-size: 18px !important;
+        font-size: 16px !important;
+        margin: 5px 0 !important;
+    }
+
+    /* Ako imaš tabele unutar boksova, smanji padding i njima */
+    table {
+        font-size: 10px !important;
     }
 }
-
 
     </style>
 </head>
