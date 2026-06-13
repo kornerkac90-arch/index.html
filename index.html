@@ -103,7 +103,7 @@
                 { par: "12.06. USA-Paragvaj", stvarni: [4, 1], prog: { "Deja": [2, 1], "Prenta": [1, 0], "Suvi": [2, 1], "Ivica": [2, 1], "Aca": [2, 0], "Nemanja": [2, 0] } }
             ],
             3: [ 
-                { par: "13.06. Katar-Švajcarska", stvarni: [0, 1], prog: { "Deja": [0, 4], "Prenta": [0, 3], "Suvi": [0, 3], "Ivica": [0, 2], "Aca": [0, 4], "Nemanja": [0, 3] } },
+                { par: "13.06. Katar-Švajcarska", stvarni: [1, 1], prog: { "Deja": [0, 4], "Prenta": [0, 3], "Suvi": [0, 3], "Ivica": [0, 2], "Aca": [0, 4], "Nemanja": [0, 3] } },
                 { par: "13.06. Brazil-Maroko", stvarni: [-1, -1], prog: { "Deja": [1, 2], "Prenta": [2, 1], "Suvi": [2, 1], "Ivica": [2, 0], "Aca": [2, 0], "Nemanja": [3, 1] } },
                 { par: "13.06. Haiti-Škotska", stvarni: [-1, -1], prog: { "Deja": [0, 1], "Prenta": [0, 3], "Suvi": [0, 2], "Ivica": [0, 2], "Aca": [0, 2], "Nemanja": [0, 3] } },
                 { par: "13.06. Australija-Turska", stvarni: [-1, -1], prog: { "Deja": [0, 2], "Prenta": [0, 1], "Suvi": [1, 2], "Ivica": [1, 2], "Aca": [1, 3], "Nemanja": [0, 2] } }
@@ -118,15 +118,39 @@
             5: [["Suvi", "Prenta"], ["Aca", "Deja"], ["Nemanja", "Ivica"]]
         };
 
-        function izracunajPoene(p, s) {
-            if (p[0] === p[1] && s[0] === s[1] && p[0] === s[0]) return 11;
-            if (p[0] === s[0] && p[1] === s[1]) return 10;
-            let pRaz = p[0] - p[1], sRaz = s[0] - s[1];
-            if (pRaz === 0 && sRaz === 0) return 5;
-            if ((pRaz > 0 && sRaz > 0) || (pRaz < 0 && sRaz < 0)) return 4;
-            return 0;
-        }
+function izracunajPoene(p, s) {
+            // Definišemo ukupan broj golova
+            let pUkupno = p[0] + p[1];
+            let sUkupno = s[0] + s[1];
 
+            // 1. Tačan nerešen rezultat (11 poena)
+            if (p[0] === p[1] && s[0] === s[1] && p[0] === s[0]) return 11;
+
+            // 2. Tačan rezultat (10 poena)
+            if (p[0] === s[0] && p[1] === s[1]) return 10;
+
+            // Inicijalni poeni za ishod
+            let poeni = 0;
+            let pRaz = p[0] - p[1];
+            let sRaz = s[0] - s[1];
+
+            // 3. Pogodjen nerešen ishod (ali ne tačan rezultat) - 5 poena
+            if (pRaz === 0 && sRaz === 0) {
+                poeni = 5;
+            } 
+            // 4. Pogodjen pobednik meca - 4 poena
+            else if ((pRaz > 0 && sRaz > 0) || (pRaz < 0 && sRaz < 0)) {
+                poeni = 4;
+            }
+
+            // 5. Pogodjen UKUPAN broj golova na mecu - 1 poen
+            // (Ovo se dodaje samo ako nije pogodio tačan rezultat)
+            if (pUkupno === sUkupno) {
+                poeni += 1;
+            }
+
+            return poeni;
+        }
         function renderUI() {
             const tbody = document.getElementById('tabela-body');
             igraci.forEach(i => { 
@@ -242,10 +266,10 @@
 
             document.getElementById('zanimljivosti').innerHTML = `<h2>💡 ZANIMLJIVOSTI</h2><ul style="list-style:none; padding:0; font-size:12px; display:flex; gap:15px;">
                 <li><b>😎 Deja:</b> Neverovatna forma!</li>
-                <li><b>⚽ Nemanja:</b> Vernost tradiciji.</li>
+                <li><b>⚽ Nemanja:</b>Kad se okrene ekran prvi je!</li>
                 <li><b>😴 Suvi:</b> Još spava.</li>
                 <li><b>🍀 Aca:</b> Čista sreća.</li>
-                <li><b>🔄 Ivica:</b> Kad se okrene ekran prvi je!</li>
+                <li><b>🔄 Ivica:</b> Kao na Fantaziju!</li>
                 <li><b>👑 Prenta:</b> To je on!</li>
             </ul>`;
 
