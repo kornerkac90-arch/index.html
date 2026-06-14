@@ -75,17 +75,24 @@
         .h2h-grid { display: grid; grid-template-columns: 1fr; gap: 5px; margin-top: 5px; }
         .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
         
-        @media (max-width: 768px) {
-    body { padding: 5px !important; width: 100vw !important; overflow-x: hidden !important; }
-    
-    /* Dodaj header ovde */
-    header { 
-        width: calc(100% - 10px) !important; 
-        margin: 0 auto 10px auto !important; 
+@media (max-width: 768px) {
+    /* 1. Body drži sve unutar ekrana */
+    body { 
         padding: 5px !important; 
+        width: 100vw !important; 
+        box-sizing: border-box !important; 
+        overflow-x: hidden !important; 
+    }
+    
+    /* 2. Header sada koristi punu širinu i oslanja se na padding body-ja */
+    header { 
+        width: 100% !important; 
+        margin: 0 0 10px 0 !important; 
+        padding: 10px !important; 
         box-sizing: border-box !important; 
     }
 
+    /* 3. Grid kontejner se ponaša kao fleksibilna kolona */
     .grid-container { 
         display: flex !important; 
         flex-direction: column !important; 
@@ -94,18 +101,18 @@
         padding: 0 !important;
     }
     
+    /* 4. Boxevi sada popunjavaju 100% dostupnog prostora bez calc */
     .box { 
-        width: calc(100% - 10px) !important; 
-        margin: 0 auto 8px auto !important; 
+        width: 100% !important; 
+        margin: 0 0 8px 0 !important; 
         box-sizing: border-box !important; 
     }
-}
 
-
-    /* Dodatna sigurnost za tabele */
+    /* 5. Tabela se sužava da stane u box */
     table {
         table-layout: fixed;
         width: 100% !important;
+        font-size: 11px !important; /* Smanji font da stane na ekran */
     }
 }
 
