@@ -228,7 +228,25 @@ function izracunajPoene(p, s) {
 
             igraci.sort((a, b) => (b.progBodovi + b.h2hBodovi + b.extraBodovi) - (a.progBodovi + a.h2hBodovi + a.extraBodovi));
             tbody.innerHTML = "";
-            igraci.forEach(i => { tbody.innerHTML += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.1);"><td style="padding: 5px 0;">${i.ime}</td><td>${i.progBodovi}</td><td>${i.h2hBodovi}</td><td style="color:var(--accent-gold); font-weight:bold;">${i.progBodovi + i.h2hBodovi + i.extraBodovi}</td></tr>`; });
+                        igraci.forEach((i, index) => { 
+                let imePrikaz = i.ime;
+                
+                // Logika za pozicije
+                if (index === 0) imePrikaz = "🥇 " + i.ime;
+                else if (index === 1) imePrikaz = "🥈 " + i.ime;
+                else if (index === 2) imePrikaz = "🥉 " + i.ime;
+                else if (index === 3) imePrikaz = "4️⃣ " + i.ime;
+                else if (index === 4) imePrikaz = "5️⃣ " + i.ime;
+                else if (index === 5) imePrikaz = "6️⃣ " + i.ime;
+
+                tbody.innerHTML += `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <td style="padding: 5px 0;">${imePrikaz}</td>
+                        <td>${i.progBodovi}</td>
+                        <td>${i.h2hBodovi}</td>
+                        <td style="color:var(--accent-gold); font-weight:bold;">${i.progBodovi + i.h2hBodovi + i.extraBodovi}</td>
+                    </tr>`; 
+            });
 
             const h2hBox = document.getElementById('h2h-box');
             h2hBox.innerHTML = '<h2>⚔️ H2H DUELI</h2><div class="h2h-grid"></div>';
