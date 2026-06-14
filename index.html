@@ -85,7 +85,7 @@
                 <thead>
                     <tr style="border-bottom: 2px solid var(--accent-gold); font-size: 12px;">
                         <th style="text-align:left;">Igrač</th><th>Prog</th><th>H2H</th><th>Ukupno</th>
-                    </tr>
+                     <th>%</th></tr>
                 </thead>
                 <tbody id="tabela-body"></tbody>
             </table>
@@ -188,65 +188,83 @@ function izracunajPoene(p, s) {
             return poeni;
         }
         function renderUI() {
-            const tbody = document.getElementById('tabela-body');
-            igraci.forEach(i => { 
-                i.progBodovi = 0; 
-                i.h2hBodovi = 0; 
-                i.extraBodovi = 0; 
+    const tbody = document.getElementById('tabela-body');
+    
+    // 1. Reset i dodatni bodovi
+    igraci.forEach(i => { 
+        i.progBodovi = 0; i.h2hBodovi = 0; i.extraBodovi = 0; 
+        if (pobednikTurnira && i.tim.includes(pobednikTurnira)) i.extraBodovi += 15;
+        if (najboljiStrelac && i.strelac.includes(najboljiStrelac)) i.extraBodovi += 12;
+        else if (strelci2i3.some(s => s !== "" && i.strelac.includes(s))) i.extraBodovi += 6;
+    });
 
-                if (pobednikTurnira && i.tim.includes(pobednikTurnira)) i.extraBodovi += 15;
-                if (najboljiStrelac && i.strelac.includes(najboljiStrelac)) i.extraBodovi += 12;
-                else if (strelci2i3.some(s => s !== "" && i.strelac.includes(s))) i.extraBodovi += 6;
+    // 2. Prognoza bodovi
+    igraci.forEach(i => {
+        for(let k=1; k<=TRENUTNO_KOLO; k++){
+            utakmiceKola[k].forEach(u => { 
+                if(u.prog[i.ime] && u.stvarni[0] >= 0) i.progBodovi += izracunajPoene(u.prog[i.ime], u.stvarni); 
             });
+        }
+    });
 
-            igraci.forEach(i => {
-                for(let k=1; k<=TRENUTNO_KOLO; k++){
-                    utakmiceKola[k].forEach(u => { 
-                        if(u.prog[i.ime] && u.stvarni[0] >= 0) i.progBodovi += izracunajPoene(u.prog[i.ime], u.stvarni); 
-                    });
+    // 3. Računanje procenta tačnih rezultata (10 poena = tačan rezultat)
+    igraci.forEach(i => {
+        let ukupno = 0, tacni = 0;
+        for(let k = 1; k <= TRENUTNO_KOLO; k++) {
+            utakmiceKola[k].forEach(u => {
+                if(u.prog[i.ime]) { 
+                    ukupno++; 
+                    if(izracunajPoene(u.prog[i.ime], u.stvarni) === 10) tacni++; 
                 }
             });
+        }
+        i.procenatTacnih = ukupno > 0 ? Math.round((tacni / ukupno) * 100) : 0;
+    });
 
-            for(let k=1; k<=TRENUTNO_KOLO; k++){
-                if(utakmiceKola[k].some(u => u.stvarni[0] >= 0)) {
-                    h2hRaspored[k].forEach(duel => {
-                        let i1 = igraci.find(i => i.ime === duel[0]);
-                        let i2 = igraci.find(i => i.ime === duel[1]);
-                        let b1 = 0, b2 = 0;
-                        utakmiceKola[k].forEach(u => {
-                            if(u.stvarni[0] >= 0) {
-                                b1 += izracunajPoene(u.prog[i1.ime], u.stvarni);
-                                b2 += izracunajPoene(u.prog[i2.ime], u.stvarni);
-                            }
-                        });
-                        if(b1 > b2) i1.h2hBodovi += 3;
-                        else if(b2 > b1) i2.h2hBodovi += 3;
-                        else { i1.h2hBodovi += 1; i2.h2hBodovi += 1; }
-                    });
-                }
-            }
-
-            igraci.sort((a, b) => (b.progBodovi + b.h2hBodovi + b.extraBodovi) - (a.progBodovi + a.h2hBodovi + a.extraBodovi));
-            tbody.innerHTML = "";
-                        igraci.forEach((i, index) => { 
-                let imePrikaz = i.ime;
-                
-                // Logika za pozicije
-                if (index === 0) imePrikaz = "🥇 " + i.ime;
-                else if (index === 1) imePrikaz = "🥈 " + i.ime;
-                else if (index === 2) imePrikaz = "🥉 " + i.ime;
-                else if (index === 3) imePrikaz = "4️⃣ " + i.ime;
-                else if (index === 4) imePrikaz = "5️⃣ " + i.ime;
-                else if (index === 5) imePrikaz = "6️⃣ " + i.ime;
-
-                tbody.innerHTML += `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                        <td style="padding: 5px 0;">${imePrikaz}</td>
-                        <td>${i.progBodovi}</td>
-                        <td>${i.h2hBodovi}</td>
-                        <td style="color:var(--accent-gold); font-weight:bold;">${i.progBodovi + i.h2hBodovi + i.extraBodovi}</td>
-                    </tr>`; 
+    // 4. H2H bodovi
+    for(let k=1; k<=TRENUTNO_KOLO; k++){
+        if(utakmiceKola[k].some(u => u.stvarni[0] >= 0)) {
+            h2hRaspored[k].forEach(duel => {
+                let i1 = igraci.find(i => i.ime === duel[0]);
+                let i2 = igraci.find(i => i.ime === duel[1]);
+                let b1 = 0, b2 = 0;
+                utakmiceKola[k].forEach(u => {
+                    if(u.stvarni[0] >= 0) {
+                        b1 += izracunajPoene(u.prog[i1.ime], u.stvarni);
+                        b2 += izracunajPoene(u.prog[i2.ime], u.stvarni);
+                    }
+                });
+                if(b1 > b2) i1.h2hBodovi += 3;
+                else if(b2 > b1) i2.h2hBodovi += 3;
+                else { i1.h2hBodovi += 1; i2.h2hBodovi += 1; }
             });
+        }
+    }
+
+    // 5. Sortiranje i ispis
+    igraci.sort((a, b) => (b.progBodovi + b.h2hBodovi + b.extraBodovi) - (a.progBodovi + a.h2hBodovi + a.extraBodovi));
+    tbody.innerHTML = "";
+    igraci.forEach((i, index) => { 
+        let imePrikaz = i.ime;
+        if (index === 0) imePrikaz = "🥇 " + i.ime;
+        else if (index === 1) imePrikaz = "🥈 " + i.ime;
+        else if (index === 2) imePrikaz = "🥉 " + i.ime;
+        else if (index === 3) imePrikaz = "4️⃣ " + i.ime;
+        else if (index === 4) imePrikaz = "5️⃣ " + i.ime;
+        else if (index === 5) imePrikaz = "6️⃣ " + i.ime;
+
+        tbody.innerHTML += `
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px;">
+                <td style="padding: 5px 0;">${imePrikaz}</td>
+                <td>${i.progBodovi}</td>
+                <td>${i.h2hBodovi}</td>
+                <td style="color:#4CAF50;">${i.procenatTacnih}%</td>
+                <td style="color:var(--accent-gold); font-weight:bold;">${i.progBodovi + i.h2hBodovi + i.extraBodovi}</td>
+            </tr>`; 
+    });
+
+    // ... (ostatak koda za H2H i Dnevne prognoze ostavi nepromenjen ispod ovoga)
+}
 
             const h2hBox = document.getElementById('h2h-box');
             h2hBox.innerHTML = '<h2>⚔️ H2H DUELI</h2><div class="h2h-grid"></div>';
