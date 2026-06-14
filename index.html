@@ -232,20 +232,40 @@
                 dBox.innerHTML += html + `</div></div>`;
             });
 
-            const histBox = document.querySelector('.box.istorija');
-            histBox.innerHTML = '<h2>📜 ISTORIJA PROGNOZA</h2><div class="hist-container" style="padding:5px;"></div>';
-            const histContainer = histBox.querySelector('.hist-container');
-            for(let k = 1; k < TRENUTNO_KOLO; k++) {
-                histContainer.innerHTML += `<div style="color:var(--accent-gold); font-weight:bold; font-size:11px; margin-top:10px; border-bottom:1px solid var(--accent-gold);">KOLO ${k}</div>`;
-                utakmiceKola[k].forEach(u => histContainer.innerHTML += `<div style="font-size:10px; opacity:0.8; margin-top:3px;">${u.par}: <b>${u.stvarni.join(':')}</b></div>`);
-                h2hRaspored[k].forEach(duel => {
-                    let b1 = 0, b2 = 0;
-                    utakmiceKola[k].forEach(u => { b1 += izracunajPoene(u.prog[duel[0]], u.stvarni); b2 += izracunajPoene(u.prog[duel[1]], u.stvarni); });
-                 // Ovde je izmena za poravnanje
+          const histBox = document.querySelector('.box.istorija');
+histBox.innerHTML = '<h2>📜 ISTORIJA PROGNOZA</h2><div class="hist-container" style="padding:5px;"></div>';
+const histContainer = histBox.querySelector('.hist-container');
+
+for(let k = 1; k < TRENUTNO_KOLO; k++) {
+    histContainer.innerHTML += `<div style="color:var(--accent-gold); font-weight:bold; font-size:11px; margin-top:10px; border-bottom:1px solid var(--accent-gold); text-align:center;">KOLO ${k}</div>`;
+    
+    utakmiceKola[k].forEach(u => {
+        // Prikaz utakmice i rezultata
+        histContainer.innerHTML += `<div style="font-size:10px; opacity:0.9; margin-top:5px; text-align:center;">${u.par}: <b>${u.stvarni.join(':')}</b></div>`;
+        
+        // Grid za prognoze svih igrača
+        let progHtml = `<div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:2px; margin:3px 0;">`;
+        igraci.forEach(igrac => {
+            let p = u.prog[igrac.ime];
+            let pPrikaz = p ? p.join(':') : "-";
+            let iF = p && u.stvarni[0] >= 0 && (p[0] === u.stvarni[0] && p[1] === u.stvarni[1]);
+            progHtml += `<div style="background:rgba(0,0,0,0.2); text-align:center; padding:1px; border-radius:2px; font-size:8px; border:1px solid ${iF ? '#4ade80' : 'rgba(255,255,255,0.1)'}; color:${iF ? '#4ade80' : 'white'}">
+                            ${igrac.ime} <b>${pPrikaz}</b>
+                         </div>`;
+        });
+        progHtml += `</div>`;
+        histContainer.innerHTML += progHtml;
+    });
+
+    // Prikaz H2H duela (tvoj postojeći kod)
+    h2hRaspored[k].forEach(duel => {
+        let b1 = 0, b2 = 0;
+        utakmiceKola[k].forEach(u => { b1 += izracunajPoene(u.prog[duel[0]], u.stvarni); b2 += izracunajPoene(u.prog[duel[1]], u.stvarni); });
+        
         histContainer.innerHTML += `
-            <div style="display:flex; justify-content:center; align-items:center; font-size:10px; margin:2px 0; background:rgba(255,255,255,0.03); padding:2px; gap: 8px;">
+            <div style="display:flex; justify-content:center; align-items:center; font-size:10px; margin:4px 0; background:rgba(255,255,255,0.03); padding:2px; gap: 8px;">
                 <span style="width: 40px; text-align: right;">${duel[0]}</span>
-                <span style="font-weight:bold;">${b1} ⚔️ ${b2}</span>
+                <span style="font-weight:bold; color:var(--accent-gold);">${b1} ⚔️ ${b2}</span>
                 <span style="width: 40px; text-align: left;">${duel[1]}</span>
             </div>`;
     });
