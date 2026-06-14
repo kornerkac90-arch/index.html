@@ -241,9 +241,15 @@
                 h2hRaspored[k].forEach(duel => {
                     let b1 = 0, b2 = 0;
                     utakmiceKola[k].forEach(u => { b1 += izracunajPoene(u.prog[duel[0]], u.stvarni); b2 += izracunajPoene(u.prog[duel[1]], u.stvarni); });
-                    histContainer.innerHTML += `<div style="display:flex; justify-content:space-between; font-size:10px; margin:2px 0; background:rgba(255,255,255,0.03); padding:2px;"><span>${duel[0]}</span><span>${b1} ⚔️ ${b2}</span><span>${duel[1]}</span></div>`;
-                });
-            }
+                 // Ovde je izmena za poravnanje
+        histContainer.innerHTML += `
+            <div style="display:flex; justify-content:center; align-items:center; font-size:10px; margin:2px 0; background:rgba(255,255,255,0.03); padding:2px; gap: 8px;">
+                <span style="width: 40px; text-align: right;">${duel[0]}</span>
+                <span style="font-weight:bold;">${b1} ⚔️ ${b2}</span>
+                <span style="width: 40px; text-align: left;">${duel[1]}</span>
+            </div>`;
+    });
+}
 
             document.getElementById('zanimljivosti').innerHTML = `<h2>💡 ZANIMLJIVOSTI</h2><ul style="list-style:none; padding:0; font-size:12px; display:flex; gap:15px;">
                 <li><b>😎 Deja:</b> Neverovatna forma!</li>
