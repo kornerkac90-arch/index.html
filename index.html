@@ -337,13 +337,14 @@ for(let k = 1; k < TRENUTNO_KOLO; k++) {
     h2hRaspored[k].forEach(duel => {
         let b1 = 0, b2 = 0;
         utakmiceKola[k].forEach(u => { b1 += izracunajPoene(u.prog[duel[0]], u.stvarni); b2 += izracunajPoene(u.prog[duel[1]], u.stvarni); });
-        
-        histContainer.innerHTML += `
-            <div style="display:flex; justify-content:center; align-items:center; font-size:10px; margin:4px 0; background:rgba(255,255,255,0.03); padding:2px; gap: 8px;">
-                <span style="width: 40px; text-align: right;">${duel[0]}</span>
-                <span style="font-weight:bold; color:var(--accent-gold);">${b1} ⚔️ ${b2}</span>
-                <span style="width: 40px; text-align: left;">${duel[1]}</span>
-            </div>`;
+        let color1 = (b1 > b2) ? "#4CAF50" : (b1 < b2) ? "#F44336" : "#FFC107";
+let color2 = (b2 > b1) ? "#4CAF50" : (b2 < b1) ? "#F44336" : "#FFC107";
+      histContainer.innerHTML += `
+    <div style="display:flex; justify-content:center; align-items:center; font-size:10px; margin:4px 0; background:rgba(255,255,255,0.03); padding:2px; gap: 8px;">
+        <span style="width: 40px; text-align: right; color: ${color1}; font-weight: bold;">${duel[0]}</span>
+        <span style="font-weight:bold; color:var(--accent-gold);">${b1} ⚔️ ${b2}</span>
+        <span style="width: 40px; text-align: left; color: ${color2}; font-weight: bold;">${duel[1]}</span>
+    </div>`;
     });
 }
 
