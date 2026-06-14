@@ -5,6 +5,29 @@
     <meta charset="UTF-8">
     <title>Trip Prognozeri WC 2026</title>
     <style>
+        header {
+    background-image: url('pozadina.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Ovo zatamnjuje sliku da bi se tekst video savršeno */
+    background-color: rgba(0, 0, 0, 0.4); 
+    background-blend-mode: darken;
+    
+    padding: 40px 20px; /* Malo više prostora da se slika bolje vidi */
+    text-align: center;
+    border-radius: 0 0 15px 15px; /* Lepše zaobljene ivice pri dnu */
+    color: white;
+    margin-bottom: 10px;
+    border: 1px solid var(--accent-gold); /* Zadržavamo zlatni okvir */
+}
+
+
+header h1 {
+    margin: 0;
+    text-shadow: 2px 2px 8px rgba(0,0,0,1); /* Jača senka za tekst */
+    font-size: 12px; /* Prilagodi ako želiš veće/manje */
+}
         :root {
             --blue-gradient: linear-gradient(135deg, #1e3a8a, #3b82f6);
             --bg-body: #0f172a;
@@ -21,15 +44,7 @@
             overflow-x: hidden; /* Sprečava horizontalno skrolovanje */
         }
         
-        header { 
-            background: var(--blue-gradient); 
-            color: white; 
-            padding: 5px; 
-            text-align: center; 
-            border-radius: 10px; 
-            margin-bottom: 10px; 
-            border: 1px solid var(--accent-gold); 
-        }
+
 
         .grid-container { 
             display: grid; 
