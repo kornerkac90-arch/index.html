@@ -159,18 +159,25 @@
                 }
             });
 
-            igraci.forEach(i => {
-                let ukupno = 0, tacni = 0;
-                for(let k = 1; k <= TRENUTNO_KOLO; k++) {
-                    utakmiceKola[k].forEach(u => {
-                        if(u.prog[i.ime]) { 
-                            ukupno++; 
-                            if(izracunajPoene(u.prog[i.ime], u.stvarni) === 10) tacni++; 
-                        }
-                    });
+          igraci.forEach(i => {
+    let ukupnoOdigrano = 0, tacni = 0;
+    
+    // Prolazimo kroz sva kola
+    for(let k = 1; k < TRENUTNO_KOLO; k++) { // Ovde koristimo k < TRENUTNO_KOLO za istoriju
+        utakmiceKola[k].forEach(u => {
+            // Brojimo samo ako postoji prognoza I ako je rezultat unet (>= 0)
+            if(u.prog[i.ime] && u.stvarni[0] >= 0) { 
+                ukupnoOdigrano++; 
+                // Ako je rezultat pogođen (10 ili 11 poena)
+                if(izracunajPoene(u.prog[i.ime], u.stvarni) >= 10) {
+                    tacni++;
                 }
-                i.procenatTacnih = ukupno > 0 ? Math.round((tacni / ukupno) * 100) : 0;
-            });
+            }
+        });
+    }
+    
+    i.procenatTacnih = ukupnoOdigrano > 0 ? Math.round((tacni / ukupnoOdigrano) * 100) : 0;
+});
 
             for(let k=1; k<=TRENUTNO_KOLO; k++){
                 if(utakmiceKola[k].some(u => u.stvarni[0] >= 0)) {
@@ -271,7 +278,7 @@ for(let k = 1; k < TRENUTNO_KOLO; k++) {
     });
 }
 
-           document.getElementById('zanimljivosti').innerHTML = `
+            document.getElementById('zanimljivosti').innerHTML = `
     <h2>💡 ZANIMLJIVOSTI</h2>
     <ul style="list-style:none; padding:0; font-size:11px; display:flex; flex-wrap:wrap; gap:10px;">
         <li><b>😎 Deja:</b> Majstor taktike!</li>
@@ -281,7 +288,6 @@ for(let k = 1; k < TRENUTNO_KOLO; k++) {
         <li><b>🔄 Ivica:</b> H2H kralj!</li>
         <li><b>👑 Prenta:</b> Statista danas.</li>
     </ul>`;
-
             document.getElementById('dugorocne-lista').innerHTML = `
                 <div class="long-term-grid">
                     ${igraci.map(i => `
