@@ -160,47 +160,66 @@ header h1 {
     </div>
 
     <script>
+        const zastave = {
+    "Meksiko": "🇲🇽", "Juzna Afrika": "🇿🇦", "Juzna Koreja": "🇰🇷", "Ceska": "🇨🇿",
+    "Kanada": "🇨🇦", "Bosna i Hercegovina": "🇧🇦", "Katar": "🇶🇦", "Svajcarska": "🇨🇭",
+    "Brazil": "🇧🇷", "Maroko": "🇲🇦", "Haiti": "🇭🇹", "Skotska": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    "SAD": "🇺🇸", "Paragvaj": "🇵🇾", "Australija": "🇦🇺", "Turska": "🇹🇷",
+    "Nemacka": "🇩🇪", "ObalaSlonovace": "🇨🇮", "Ekvador": "🇪🇨", "Kurasao": "🇨🇼",
+    "Holandija": "🇳🇱", "Japan": "🇯🇵", "Svedska": "🇸🇪", "Tunis": "🇹🇳",
+    "Belgija": "🇧🇪", "Egipat": "🇪🇬", "Iran": "🇮🇷", "Novi Zeland": "🇳🇿",
+    "Spanija": "🇪🇸", "Zelenortska Ostrva": "🇨🇻", "Saudijska Arabija": "🇸🇦", "Urugvaj": "🇾",
+    "Francuska": "🇫🇷", "Senegal": "🇸🇳", "Irak": "🇮🇶", "Norveska": "🇳🇴",
+    "Argentina": "🇦🇷", "Alzir": "🇩🇿", "Austrija": "🇦🇹", "Jordan": "🇯🇴",
+    "Portugal": "🇵🇹", "DR Kongo": "🇨🇩", "Uzbekistan": "🇺🇿", "Kolumbija": "🇨🇴",
+    "Engleska": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Hrvatska": "🇭🇷", "Gana": "🇬🇭", "Panama": "🇵🇦"
+};
+function formatirajTim(ime) {
+    // Provera: ako ime postoji u objektu, vrati zastavu + ime, inače samo ime
+    const zastava = zastave[ime] || "🏳️"; 
+    return `${zastava} ${ime}`;
+}
         const TRENUTNO_KOLO = 4; 
 
         const pobednikTurnira = ""; 
         const najboljiStrelac = ""; 
         const strelci2i3 = ["", ""]; 
 
-        const igraci = [
-            { ime: "Deja", progBodovi: 0, h2hBodovi: 0, tim: "🇧🇷 Brazil", strelac: "⚡ Mbappe" },
-            { ime: "Prenta", progBodovi: 0, h2hBodovi: 0, tim: "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Engleska", strelac: "🎯 Kane" },
-            { ime: "Suvi", progBodovi: 0, h2hBodovi: 0, tim: "🇪🇸 Španija", strelac: "🐐 Messi" },
-            { ime: "Ivica", progBodovi: 0, h2hBodovi: 0, tim: "🇫🇷 Francuska", strelac: "⚽ Gakpo" },
-            { ime: "Aca", progBodovi: 0, h2hBodovi: 0, tim: "🇪🇸 Španija", strelac: "🌟 Yamal" },
-            { ime: "Nemanja", progBodovi: 0, h2hBodovi: 0, tim: "🇧🇷 Brazil", strelac: "⚽ Ronaldo" }
-        ];
+       const igraci = [
+    { ime: "Deja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil", strelac: "Mbappe" },
+    { ime: "Prenta", progBodovi: 0, h2hBodovi: 0, tim: "Engleska", strelac: "Kane" },
+    { ime: "Suvi", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "Messi" },
+    { ime: "Ivica", progBodovi: 0, h2hBodovi: 0, tim: "Francuska", strelac: "Gakpo" },
+    { ime: "Aca", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "Yamal" },
+    { ime: "Nemanja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil", strelac: "Ronaldo" }
+];
 
         const utakmiceKola = {
             1: [ 
-                { par: "11.06. Meksiko-J.Afrika", stvarni: [2, 0], prog: { "Deja": [2, 0], "Prenta": [2, 0], "Suvi": [3, 0], "Ivica": [3, 1], "Aca": [3, 0], "Nemanja": [1, 0] } },
-                { par: "11.06. J.Koreja-Češka", stvarni: [2, 1], prog: { "Deja": [2, 1], "Prenta": [1, 0], "Suvi": [1, 1], "Ivica": [1, 2], "Aca": [0, 2], "Nemanja": [1, 1] } }
+                { par: "11.06. Meksiko-Juzna Afrika", stvarni: [2, 0], prog: { "Deja": [2, 0], "Prenta": [2, 0], "Suvi": [3, 0], "Ivica": [3, 1], "Aca": [3, 0], "Nemanja": [1, 0] } },
+                { par: "11.06. Juzna Koreja-Ceska", stvarni: [2, 1], prog: { "Deja": [2, 1], "Prenta": [1, 0], "Suvi": [1, 1], "Ivica": [1, 2], "Aca": [0, 2], "Nemanja": [1, 1] } }
             ],
             2: [ 
                 { par: "12.06. Kanada-BiH", stvarni: [1, 1], prog: { "Deja": [1, 1], "Prenta": [1, 1], "Suvi": [2, 1], "Ivica": [1, 2], "Aca": [1, 1], "Nemanja": [1, 2] } },
                 { par: "12.06. USA-Paragvaj", stvarni: [4, 1], prog: { "Deja": [2, 1], "Prenta": [1, 0], "Suvi": [2, 1], "Ivica": [2, 1], "Aca": [2, 0], "Nemanja": [2, 0] } }
             ],
             3: [ 
-                { par: "13.06. Katar-Švajcarska", stvarni: [1, 1], prog: { "Deja": [0, 4], "Prenta": [0, 3], "Suvi": [0, 3], "Ivica": [0, 2], "Aca": [0, 4], "Nemanja": [0, 3] } },
+                { par: "13.06. Katar-Svajcarska", stvarni: [1, 1], prog: { "Deja": [0, 4], "Prenta": [0, 3], "Suvi": [0, 3], "Ivica": [0, 2], "Aca": [0, 4], "Nemanja": [0, 3] } },
                 { par: "13.06. Brazil-Maroko", stvarni: [1, 1], prog: { "Deja": [1, 2], "Prenta": [2, 1], "Suvi": [2, 1], "Ivica": [2, 0], "Aca": [2, 0], "Nemanja": [3, 1] } },
-                { par: "13.06. Haiti-Škotska", stvarni: [0, 1], prog: { "Deja": [0, 1], "Prenta": [0, 3], "Suvi": [0, 2], "Ivica": [0, 2], "Aca": [0, 2], "Nemanja": [0, 3] } },
+                { par: "13.06. Haiti-Skotska", stvarni: [0, 1], prog: { "Deja": [0, 1], "Prenta": [0, 3], "Suvi": [0, 2], "Ivica": [0, 2], "Aca": [0, 2], "Nemanja": [0, 3] } },
                 { par: "13.06. Australija-Turska", stvarni: [2, 0], prog: { "Deja": [0, 2], "Prenta": [0, 1], "Suvi": [1, 2], "Ivica": [1, 2], "Aca": [1, 3], "Nemanja": [0, 2] } }
             ],
             4: [ 
-                { par: "14.06. Nemačka-Kurasao", stvarni: [5, 1], prog: { "Deja": [3, 0], "Prenta": [4, 0], "Suvi": [5, 0], "Ivica": [4, 0], "Aca": [6, 0], "Nemanja": [5, 0] } },
-                { par: "14.06. Holandija-Japan", stvarni: [-1, -1], prog: { "Deja": [2, 2], "Prenta": [1, 0], "Suvi": [3, 1], "Ivica": [3, 1], "Aca": [1, 1], "Nemanja": [2, 0] } },
-                { par: "14.06. O.Slonovače-Ekvador", stvarni: [-1, -1], prog: { "Deja": [2, 0], "Prenta": [2, 0], "Suvi": [1, 2], "Ivica": [2, 1], "Aca": [1, 1], "Nemanja": [1, 1] } },
-                { par: "14.06. Švedska-Tunis", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [1, 1], "Suvi": [2, 0], "Ivica": [1, 0], "Aca": [1, 1], "Nemanja": [1, 0] } }
+                { par: "14.06.19.00 Nemacka-Kurasao", stvarni: [5, 1], prog: { "Deja": [3, 0], "Prenta": [4, 0], "Suvi": [5, 0], "Ivica": [4, 0], "Aca": [6, 0], "Nemanja": [5, 0] } },
+                { par: "14.06.22.00 Holandija-Japan", stvarni: [-1, -1], prog: { "Deja": [2, 2], "Prenta": [1, 0], "Suvi": [3, 1], "Ivica": [3, 1], "Aca": [1, 1], "Nemanja": [2, 0] } },
+                { par: "15.06.01.00 ObalaSlonovace-Ekvador", stvarni: [-1, -1], prog: { "Deja": [2, 0], "Prenta": [2, 0], "Suvi": [1, 2], "Ivica": [2, 1], "Aca": [1, 1], "Nemanja": [1, 1] } },
+                { par: "15.06.04.00 Svedska-Tunis", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [1, 1], "Suvi": [2, 0], "Ivica": [1, 0], "Aca": [1, 1], "Nemanja": [1, 0] } }
             ],
             5: [ 
-                { par: "15.06. Španija-Z.Ostrva", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
-                { par: "15.06. Belgija-Egipat", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
-                { par: "15.06. S.Arabija-Urugvaj", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
-                { par: "15.06. Iran-N.Zeland", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } }
+                { par: "15.06.18.00 Spanija-Zelenortska Ostrva", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
+                { par: "15.06.21.00 Belgija-Egipat", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
+                { par: "16.06.00.00 Saudijska Arabija-Urugvaj", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
+                { par: "16.06.03.00 Iran-Novi Zeland", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } }
             ]
         };
 
@@ -310,18 +329,26 @@ header h1 {
             });
 
             const dBox = document.getElementById('dnevne-prognoze');
-            dBox.innerHTML = '<h2>⚽ DNEVNE PROGNOZE</h2>';
-            utakmiceKola[TRENUTNO_KOLO].forEach(u => {
-                let sPrikaz = (u.stvarni[0] < 0) ? "-:-" : u.stvarni.join(':');
-                let html = `<div class="match-card"><div style="color:var(--accent-gold); font-size:10px; font-weight:bold;">${u.par} (${sPrikaz})</div><div class="prog-grid">`;
-                igraci.forEach(igrac => {
-                    let p = u.prog[igrac.ime];
-                    let pPrikaz = p ? p.join(':') : "-";
-                    let iF = p && u.stvarni[0] >= 0 && (p[0] === u.stvarni[0] && p[1] === u.stvarni[1]);
-                    html += `<div class="p-box ${iF ? 'score-win' : ''}"><div style="opacity:0.7">${igrac.ime}</div><b>${pPrikaz}</b></div>`;
-                });
-                dBox.innerHTML += html + `</div></div>`;
-            });
+   // Pronađi ovaj deo u renderUI i zameni ga ovim:
+dBox.innerHTML = '<h2>⚽ DNEVNE PROGNOZE</h2>';
+utakmiceKola[TRENUTNO_KOLO].forEach(u => {
+    let sPrikaz = (u.stvarni[0] < 0) ? "-:-" : u.stvarni.join(':');
+    
+    // Ovde razdvajamo par "Datum. Tim1-Tim2" na delove
+    let delovi = u.par.split(" ");
+    let timovi = delovi[1].split("-");
+    let prikazPar = `${delovi[0]} ${formatirajTim(timovi[0])} - ${formatirajTim(timovi[1])}`;
+
+    let html = `<div class="match-card"><div style="color:var(--accent-gold); font-size:10px; font-weight:bold;">${prikazPar} (${sPrikaz})</div><div class="prog-grid">`;
+    
+    igraci.forEach(igrac => {
+        let p = u.prog[igrac.ime];
+        let pPrikaz = p ? p.join(':') : "-";
+        let iF = p && u.stvarni[0] >= 0 && (p[0] === u.stvarni[0] && p[1] === u.stvarni[1]);
+        html += `<div class="p-box ${iF ? 'score-win' : ''}"><div style="opacity:0.7">${igrac.ime}</div><b>${pPrikaz}</b></div>`;
+    });
+    dBox.innerHTML += html + `</div></div>`;
+});
 
           const histBox = document.querySelector('.box.istorija');
 histBox.innerHTML = '<h2>📜 ISTORIJA PROGNOZA</h2><div class="hist-container" style="padding:5px;"></div>';
@@ -374,7 +401,7 @@ let color2 = (b2 > b1) ? "#4CAF50" : (b2 < b1) ? "#F44336" : "#FFC107";
                     ${igraci.map(i => `
                         <div class="long-term-item" style="text-transform: uppercase;">
                             <span style="font-weight:bold; flex: 1;">${i.ime}</span>
-                            <span style="flex: 1; text-align: center;">${i.tim}</span>
+<span style="flex: 1; text-align: center;">${formatirajTim(i.tim)}</span>
                             <span style="flex: 1; text-align: right;">${i.strelac}</span>
                         </div>
                     `).join('')}
