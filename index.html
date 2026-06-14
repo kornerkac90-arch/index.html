@@ -76,19 +76,33 @@
         .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
         
         @media (max-width: 768px) {
-            body { padding: 5px; width: 100vw; }
-            .grid-container { 
-                display: flex !important; 
-                flex-direction: column !important; 
-                width: 100% !important; 
-                height: auto !important; 
-            }
-            .box { 
-                width: 100% !important; 
-                margin: 5px 0 !important; 
-                box-sizing: border-box !important; 
-            }
-        }
+    body { 
+        padding: 5px !important; 
+        width: 100vw !important; 
+        overflow-x: hidden !important; 
+    }
+    
+    .grid-container { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        width: 100% !important; 
+        gap: 8px !important;
+        padding: 0 !important;
+    }
+    
+    .box { 
+        width: calc(100% - 10px) !important; /* Širina ekrana minus mali prostor za ivice */
+        margin: 0 auto 8px auto !important; /* Centrirano sa marginom na dnu */
+        box-sizing: border-box !important; 
+    }
+
+    /* Dodatna sigurnost za tabele */
+    table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+}
+
     </style>
 </head>
 <body>
