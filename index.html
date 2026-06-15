@@ -175,9 +175,16 @@ const zastave = {
     "Engleska": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Hrvatska": "🇭🇷", "Gana": "🇬🇭", "Panama": "🇵🇦"
 };
 function formatirajTim(ime) {
-    // Provera: ako ime postoji u objektu, vrati zastavu + ime, inače samo ime
-    const zastava = zastave[ime] || "🏳️"; 
-    return `${zastava} ${ime}`;
+    // 1. Ukloni datum iz stringa (sve što izgleda kao "15.06." ili "15.06.19.00")
+    let cistoIme = ime.replace(/^\d{2}\.\d{2}\.(\d{2}\.\d{2}\.)?\s*/, '').trim();
+    
+    // 2. Ukloni sve razmake da bismo dobili ključ bez razmaka (npr. "ZelenortskaOstrva")
+    let kljuc = cistoIme.replace(/\s+/g, '');
+    
+    // 3. Proveri u objektu zastave
+    const zastava = zastave[kljuc] || "🏳️"; 
+    
+    return `${zastava} ${cistoIme}`;
 }
         const TRENUTNO_KOLO = 5; 
 
@@ -215,12 +222,12 @@ function formatirajTim(ime) {
                 { par: "15.06.01.00 ObalaSlonovace-Ekvador", stvarni: [1, 0], prog: { "Deja": [2, 0], "Prenta": [2, 0], "Suvi": [1, 2], "Ivica": [2, 1], "Aca": [1, 1], "Nemanja": [1, 1] } },
                 { par: "15.06.04.00 Svedska-Tunis", stvarni: [5, 1], prog: { "Deja": [0, 0], "Prenta": [1, 1], "Suvi": [2, 0], "Ivica": [1, 0], "Aca": [1, 1], "Nemanja": [1, 0] } }
             ],
-            5: [ 
-                { par: "15.06. Spanija-Zelenortska Ostrva", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
-                { par: "15.06. Belgija-Egipat", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
-                { par: "16.06. Saudijska Arabija-Urugvaj", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
-                { par: "16.06. Iran-Novi Zeland", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } }
-            ]
+         5: [ 
+    { par: "15.06.18.00 Spanija-ZelenortskaOstrva", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
+    { par: "15.06.21.00 Belgija-Egipat", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
+    { par: "16.06.00.00 SaudijskaArabija-Urugvaj", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } },
+    { par: "16.06.03.00 Iran-NoviZeland", stvarni: [-1, -1], prog: { "Deja": [0, 0], "Prenta": [0, 0], "Suvi": [0, 0], "Ivica": [0, 0], "Aca": [0, 0], "Nemanja": [0, 0] } }
+]
         };
 
         const h2hRaspored = {
