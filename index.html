@@ -154,7 +154,7 @@ box { padding: 2px !important; font-size: 8px !important; }
 .rank-1 { color: #fbbf24 !important; font-weight: bold; text-shadow: 0 0 5px rgba(251, 191, 36, 0.5); } /* Zlatna */
 .rank-2 { color: #c0c0c0 !important; font-weight: bold; } /* Srebrna */
 .rank-3 { color: #cd7f32 !important; font-weight: bold; } /* Bronzana */
-        
+
         @media (max-width: 768px) {
     /* 1. Dozvoljavamo stranici da se normalno skroluje vertikalno */
     body { 
@@ -220,7 +220,7 @@ box { padding: 2px !important; font-size: 8px !important; }
     .match-card { padding: 2px !important; margin-bottom: 2px !important; font-size: 8px !important; }
     .long-term-item { padding: 2px !important; font-size: 9px !important; }
     .p-box { padding: 2px !important; font-size: 8px !important; }
-}
+
 /* Dodaj ga ovde, pred kraj <style> sekcije: */
     .box h2 { 
         margin-bottom: 5px; 
@@ -231,6 +231,12 @@ box { padding: 2px !important; font-size: 8px !important; }
         overflow-y: auto; 
         flex-grow: 1; 
     }
+
+    .tabs-container { display: flex; overflow-x: auto; gap: 5px; margin-bottom: 8px; padding-bottom: 2px; }
+.tab-btn { background: #1e293b; color: white; border: 1px solid var(--accent-gold); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; white-space: nowrap; }
+.tab-btn.active { background: var(--accent-gold); color: #0f172a; font-weight: bold; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
     </style>
 </head>
 <body>
@@ -447,7 +453,7 @@ function formatirajTim(ime) {
             tbody.innerHTML = "";
             igraci.forEach((i, index) => { 
                 let imePrikaz = (index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : (index+1) + "️⃣ ") + i.ime;
-                // Izmeni ovaj deo gde se generiše red tabele:
+               // Izmeni ovaj deo gde se generiše red tabele:
 tbody.innerHTML += `
     <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px;">
         <td class="${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''}" style="padding: 5px 0;">
@@ -496,44 +502,40 @@ utakmiceKola[TRENUTNO_KOLO].forEach(u => {
 });
 
           const histBox = document.querySelector('.box.istorija');
-histBox.innerHTML = '<h2>📜 ISTORIJA PROGNOZA</h2><div class="hist-container" style="padding:5px;"></div>';
-const histContainer = histBox.querySelector('.hist-container');
+histBox.innerHTML = '<h2>📜 ISTORIJA PROGNOZA</h2><div class="tabs-container" id="hist-tabs"></div><div id="hist-content"></div>';
+const tabsContainer = document.getElementById('hist-tabs');
+const histContent = document.getElementById('hist-content');
 
 for(let k = 1; k < TRENUTNO_KOLO; k++) {
-    histContainer.innerHTML += `<div style="color:var(--accent-gold); font-weight:bold; font-size:11px; margin-top:10px; border-bottom:1px solid var(--accent-gold); text-align:center;">KOLO ${k}</div>`;
+    tabsContainer.innerHTML += `<button class="tab-btn" onclick="openTab(event, 'kolo-${k}')">KOLO ${k}</button>`;
     
+    let content = `<div id="kolo-${k}" class="tab-content">`;
     utakmiceKola[k].forEach(u => {
-        // Prikaz utakmice i rezultata
-        histContainer.innerHTML += `<div style="font-size:10px; opacity:0.9; margin-top:5px; text-align:center;">${u.par}: <b>${u.stvarni.join(':')}</b></div>`;
-        
-        // Grid za prognoze svih igrača
+        content += `<div style="font-size:10px; opacity:0.9; margin-top:5px; text-align:center;">${u.par}: <b>${u.stvarni.join(':')}</b></div>`;
         let progHtml = `<div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:2px; margin:3px 0;">`;
         igraci.forEach(igrac => {
             let p = u.prog[igrac.ime];
             let pPrikaz = p ? p.join(':') : "-";
             let iF = p && u.stvarni[0] >= 0 && (p[0] === u.stvarni[0] && p[1] === u.stvarni[1]);
-            progHtml += `<div style="background:rgba(0,0,0,0.2); text-align:center; padding:1px; border-radius:2px; font-size:8px; border:1px solid ${iF ? '#4ade80' : 'rgba(255,255,255,0.1)'}; color:${iF ? '#4ade80' : 'white'}">
-                            ${igrac.ime} <b>${pPrikaz}</b>
-                         </div>`;
+            progHtml += `<div style="background:rgba(0,0,0,0.2); text-align:center; padding:1px; border-radius:2px; font-size:8px; border:1px solid ${iF ? '#4ade80' : 'rgba(255,255,255,0.1)'}; color:${iF ? '#4ade80' : 'white'}">${igrac.ime} <b>${pPrikaz}</b></div>`;
         });
-        progHtml += `</div>`;
-        histContainer.innerHTML += progHtml;
+        content += progHtml + `</div>`;
     });
 
-    // Prikaz H2H duela (tvoj postojeći kod)
     h2hRaspored[k].forEach(duel => {
         let b1 = 0, b2 = 0;
         utakmiceKola[k].forEach(u => { b1 += izracunajPoene(u.prog[duel[0]], u.stvarni); b2 += izracunajPoene(u.prog[duel[1]], u.stvarni); });
-        let color1 = (b1 > b2) ? "#4CAF50" : (b1 < b2) ? "#F44336" : "#FFC107";
-let color2 = (b2 > b1) ? "#4CAF50" : (b2 < b1) ? "#F44336" : "#FFC107";
-      histContainer.innerHTML += `
-    <div style="display:flex; justify-content:center; align-items:center; font-size:10px; margin:4px 0; background:rgba(255,255,255,0.03); padding:2px; gap: 8px;">
-        <span style="width: 40px; text-align: right; color: ${color1}; font-weight: bold;">${duel[0]}</span>
-        <span style="font-weight:bold; color:var(--accent-gold);">${b1} ⚔️ ${b2}</span>
-        <span style="width: 40px; text-align: left; color: ${color2}; font-weight: bold;">${duel[1]}</span>
-    </div>`;
+        content += `<div style="display:flex; justify-content:center; align-items:center; font-size:9px; margin:4px 0; background:rgba(255,255,255,0.03); padding:2px; gap: 5px;">
+                        <span style="color:${(b1>b2?"#4CAF50":"#F44336")}; font-weight:bold;">${duel[0]}</span>
+                        <span style="color:var(--accent-gold);">${b1}:${b2}</span>
+                        <span style="color:${(b2>b1?"#4CAF50":"#F44336")}; font-weight:bold;">${duel[1]}</span>
+                    </div>`;
     });
+    content += `</div>`;
+    histContent.innerHTML += content;
 }
+// Aktiviraj prvi tab
+if(document.querySelector('.tab-btn')) document.querySelector('.tab-btn').click();
 
             document.getElementById('zanimljivosti').innerHTML = `
     <h2>💡 ZANIMLJIVOSTI</h2>
@@ -552,6 +554,13 @@ let color2 = (b2 > b1) ? "#4CAF50" : (b2 < b1) ? "#F44336" : "#FFC107";
                         </div>
                     `).join('')}
                 </div>`;
+        }
+        // OVDE UBACI FUNKCIJU POD BROJEM 3:
+        window.openTab = function(evt, tabId) {
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = "none");
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).style.display = "block";
+            evt.currentTarget.classList.add('active');
         }
         window.onload = renderUI;
     </script>
