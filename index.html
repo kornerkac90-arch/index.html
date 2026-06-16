@@ -151,6 +151,10 @@ body {
         
 box { padding: 2px !important; font-size: 8px !important; }
 
+.rank-1 { color: #fbbf24 !important; font-weight: bold; text-shadow: 0 0 5px rgba(251, 191, 36, 0.5); } /* Zlatna */
+.rank-2 { color: #c0c0c0 !important; font-weight: bold; } /* Srebrna */
+.rank-3 { color: #cd7f32 !important; font-weight: bold; } /* Bronzana */
+        
         @media (max-width: 768px) {
     /* 1. Dozvoljavamo stranici da se normalno skroluje vertikalno */
     body { 
@@ -443,14 +447,17 @@ function formatirajTim(ime) {
             tbody.innerHTML = "";
             igraci.forEach((i, index) => { 
                 let imePrikaz = (index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : (index+1) + "️⃣ ") + i.ime;
-                tbody.innerHTML += `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px;">
-                        <td style="padding: 5px 0;">${imePrikaz}</td>
-                        <td>${i.progBodovi}</td>
-                        <td>${i.h2hBodovi}</td>
-                        <td style="color:#4CAF50;">${i.procenatTacnih}%</td>
-                        <td style="color:var(--accent-gold); font-weight:bold;">${i.progBodovi + i.h2hBodovi + i.extraBodovi}</td>
-                    </tr>`; 
+                // Izmeni ovaj deo gde se generiše red tabele:
+tbody.innerHTML += `
+    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 11px;">
+        <td class="${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''}" style="padding: 5px 0;">
+            ${(index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : (index+1) + "️⃣ ") + i.ime}
+        </td>
+        <td>${i.progBodovi}</td>
+        <td>${i.h2hBodovi}</td>
+        <td style="color:#4CAF50;">${i.procenatTacnih}%</td>
+        <td style="color:var(--accent-gold); font-weight:bold;">${i.progBodovi + i.h2hBodovi + i.extraBodovi}</td>
+    </tr>`;
             });
 
             const h2hBox = document.getElementById('h2h-box');
