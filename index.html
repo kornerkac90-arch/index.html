@@ -146,13 +146,43 @@ body {
         .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
         
 @media (max-width: 768px) {
-    /* 1. Body drži sve unutar ekrana */
+    /* 1. Resetovanje za mobilni */
     body { 
         padding: 5px !important; 
-        width: 100vw !important; 
+        width: 100% !important; 
+        margin: 0 !important;
         box-sizing: border-box !important; 
         overflow-x: hidden !important; 
     }
+
+    /* 2. Glavni grid postavi u jednu kolonu */
+    .dashboard-container { /* Pretpostavljam da imaš neki glavni grid */
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+
+    /* 3. Kutije moraju da se prilagode širini */
+    .box {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 10px !important;
+        box-sizing: border-box !important;
+        /* Ovo osigurava da neon ivice ostanu unutar box-a */
+    }
+
+    /* 4. Sredi tabele da budu skrolabilne (ako su preširoke) */
+    .tabela-wrapper, .hist-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch; /* Glatki skrol na iPhone-u */
+        width: 100% !important;
+    }
+
+    /* 5. Smanji fontove da sve stane */
+    h2 { font-size: 14px !important; }
+    .tab-btn { font-size: 10px !important; padding: 5px !important; }
+}
     
     /* 2. Header sada koristi punu širinu i oslanja se na padding body-ja */
     header { 
