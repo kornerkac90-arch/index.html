@@ -146,15 +146,16 @@ body {
         .h2h-item { background: rgba(255,255,255,0.05); padding: 5px; border-radius: 3px; text-align: center; font-size: 11px; }
         
 box { padding: 2px !important; font-size: 8px !important; }
-@media (max-width: 768px) {
+
+        @media (max-width: 768px) {
     /* 1. Dozvoljavamo stranici da se normalno skroluje vertikalno */
     body { 
         padding: 5px !important; 
         width: 100% !important; 
         box-sizing: border-box !important; 
         overflow-x: hidden !important; 
-        overflow-y: auto !important; /* Omogućava vertikalni skrol */
-        height: auto !important;    /* Ne zaključavamo visinu na 100vh */
+        overflow-y: auto !important; 
+        height: auto !important; 
     }
     
     /* 2. Header */
@@ -175,20 +176,23 @@ box { padding: 2px !important; font-size: 8px !important; }
         height: auto !important;
     }
     
-    /* 4. Boxevi dobijaju fiksnu visinu da bi unutrašnji sadržaj bio skrolabilan */
+    /* 4. Boxevi postaju fleksibilni - šire se prema sadržaju do max-height */
     .box { 
         width: 100% !important; 
         margin: 0 0 10px 0 !important; 
         box-sizing: border-box !important;
-        height: 250px !important; /* Svaki box je visok 250px, ostalo se skroluje */
+        height: auto !important;          /* Automatska visina prema sadržaju */
+        max-height: 400px !important;     /* Ograničenje da ne zauzme ceo ekran */
         overflow: hidden !important;
+        display: flex;
+        flex-direction: column;
     }
 
-    /* 5. Sadržaj unutar boxa dobija skrol */
+    /* 5. Sadržaj unutar boxa dobija skrol SAMO ako pređe max-height */
     .box > div:not(h2) { 
         overflow-y: auto !important; 
         flex-grow: 1;
-        -webkit-overflow-scrolling: touch; /* Glatki skrol na telefonu */
+        -webkit-overflow-scrolling: touch; 
     }
 
     /* 6. Optimizacija elemenata unutar boxova */
@@ -197,6 +201,12 @@ box { padding: 2px !important; font-size: 8px !important; }
         width: 100% !important;
         font-size: 9px !important; 
     }
+    
+    h2 { font-size: 11px !important; margin-bottom: 5px !important; }
+    .match-card { padding: 2px !important; margin-bottom: 2px !important; font-size: 8px !important; }
+    .long-term-item { padding: 2px !important; font-size: 9px !important; }
+    .p-box { padding: 2px !important; font-size: 8px !important; }
+}
     
     h2 { font-size: 11px !important; margin-bottom: 5px !important; }
     .match-card { padding: 2px !important; margin-bottom: 2px !important; font-size: 8px !important; }
