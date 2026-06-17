@@ -579,19 +579,17 @@ Dnevne prognoze su vam postale pravi cirkus – dok vi optimistično tipujete na
         }
 window.onload = () => {
     renderUI();
-    // Pokreni azuriranje na svakih 15 minuta
+    // Pokreni azuriranje na svakih 10 minuta
     setInterval(azurirajRezultate, 10 * 60 * 1000);
 };
         // --- API LIVE REZULTATI ---
 async function azurirajRezultate() {
-    // 1. Provera vremena (radi samo 18:00 - 07:00)
+    // 1. Provera vremena
     const sat = new Date().getHours();
-    if (!(sat >= 18 || sat < 7)) return;
+    if (!(sat >= 19 || sat < 7)) return;
 
-    // 2. Provera da li ima aktivnih mečeva da ne trošimo API bezveze
-    const imaAktivnih = Object.values(utakmiceKola).some(kolo => 
-        kolo.some(u => u.stvarni[0] < 0)
-    );
+    // 2. Provera da li u TRENUTNO_KOLO ima aktivnih mečeva
+    const imaAktivnih = utakmiceKola[TRENUTNO_KOLO].some(u => u.stvarni[0] < 0);
     if (!imaAktivnih) return;
 
     const apiKey = 'f0795ca90e468fc87e6d98cde0f477d7'; 
@@ -608,24 +606,21 @@ async function azurirajRezultate() {
             const homeG = match.goals.home;
             const awayG = match.goals.away;
 
-            Object.keys(utakmiceKola).forEach(kolo => {
-                utakmiceKola[kolo].forEach(u => {
-                    // Izvlačimo timove iz tvog stringa (npr "Portugal-DRKongo")
-                    // Pretpostavka: format je "Datum Tim1-Tim2"
-                    const timoviString = u.par.split(" ")[1]; 
-                    const t1 = timoviString.split("-")[0];
-                    const t2 = timoviString.split("-")[1];
+            // Prolazimo SAMO kroz TRENUTNO_KOLO
+            utakmiceKola[TRENUTNO_KOLO].forEach(u => {
+                const timoviString = u.par.split(" ")[1]; 
+                const t1 = timoviString.split("-")[0];
+                const t2 = timoviString.split("-")[1];
 
-                    // Prevodimo na engleski
-                    if (hName === prevodTimova[t1] || hName === prevodTimova[t2]) {
-                        if (u.stvarni[0] < 0) {
-                            u.stvarni = [homeG, awayG];
-                        }
+                // Proveravamo da li je to taj meč
+                if (hName === prevodTimova[t1] || hName === prevodTimova[t2]) {
+                    if (u.stvarni[0] < 0) {
+                        u.stvarni = [homeG, awayG];
                     }
-                });
+                }
             });
         });
-        renderUI();
+        renderUI(); // Osvazi tabelu
     } catch (e) { console.error("API Error:", e); }
 }
     </script>
