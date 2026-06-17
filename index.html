@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="sr">
 <head>
     <link rel="manifest" href="manifest.json">
@@ -266,20 +266,6 @@ box { padding: 2px !important; font-size: 8px !important; }
     </div>
 
     <script>
-        const prevodTimova = {
-    "Meksiko": "Mexico", "JuznaAfrika": "South Africa", "JuznaKoreja": "South Korea", "Ceska": "Czech Republic",
-    "Kanada": "Canada", "BosnaiHercegovina": "Bosnia and Herzegovina", "Katar": "Qatar", "Svajcarska": "Switzerland",
-    "Brazil": "Brazil", "Maroko": "Morocco", "Haiti": "Haiti", "Skotska": "Scotland",
-    "SAD": "USA", "Paragvaj": "Paraguay", "Australija": "Australia", "Turska": "Turkey",
-    "Nemacka": "Germany", "ObalaSlonovace": "Ivory Coast", "Ekvador": "Ecuador", "Kurasao": "Curacao",
-    "Holandija": "Netherlands", "Japan": "Japan", "Svedska": "Sweden", "Tunis": "Tunisia",
-    "Belgija": "Belgium", "Egipat": "Egypt", "Iran": "Iran", "NoviZeland": "New Zealand",
-    "Spanija": "Spain", "ZelenortskaOstrva": "Cape Verde", "SaudijskaArabija": "Saudi Arabia", "Urugvaj": "Uruguay",
-    "Francuska": "France", "Senegal": "Senegal", "Irak": "Iraq", "Norveska": "Norway",
-    "Argentina": "Argentina", "Alzir": "Algeria", "Austrija": "Austria", "Jordan": "Jordan",
-    "Portugal": "Portugal", "DRKongo": "DR Congo", "Uzbekistan": "Uzbekistan", "Kolumbija": "Colombia",
-    "Engleska": "England", "Hrvatska": "Croatia", "Gana": "Ghana", "Panama": "Panama"
-};
 const zastave = {
     "Meksiko": "🇲🇽", "JuznaAfrika": "🇿🇦", "JuznaKoreja": "🇰🇷", "Ceska": "🇨🇿",
     "Kanada": "🇨🇦", "BosnaiHercegovina": "🇧🇦", "Katar": "🇶🇦", "Svajcarska": "🇨🇭",
@@ -318,7 +304,7 @@ function formatirajTim(ime) {
     { ime: "Suvi", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "Messi⚽️⚽️⚽️ " },
     { ime: "Ivica", progBodovi: 0, h2hBodovi: 0, tim: "Francuska", strelac: "Gakpo🧑🏿‍🦽" },
     { ime: "Aca", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "Yamal👨🏿‍🦯" },
-    { ime: "Nemanja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil", strelac: "Ronaldo🩼" }
+    { ime: "Nemanja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil", strelac: "Ronaldo" }
 ];
 
         const utakmiceKola = {
@@ -356,8 +342,8 @@ function formatirajTim(ime) {
 ],
     7: [
         { par: "17.06.19:00 Portugal-DRKongo", stvarni: [1, 1], prog: { "Prenta": [3,0], "Aca": [4,0], "Nemanja": [3,1], "Suvi": [2,0], "Ivica": [3,0], "Deja": [2,0] } },
-        { par: "17.06.22:00 Engleska-Hrvatska", stvarni: [-1, -1], prog:{ "Prenta": [2,1], "Aca": [2,1], "Nemanja": [1,1], "Suvi": [3,1], "Ivica": [2,1], "Deja": [1,1] } },
-        { par: "18.06.01:00 Gana-Panama", stvarni: [-1, -1], 	prog: { "Prenta": [2,1], "Aca": [1,1], "Nemanja": [1,0], "Suvi": [1,1], "Ivica": [2,0], "Deja": [2,1] } },
+        { par: "17.06.22:00 Engleska-Hrvatska", stvarni: [4,2], prog:{ "Prenta": [2,1], "Aca": [2,1], "Nemanja": [1,1], "Suvi": [3,1], "Ivica": [2,1], "Deja": [1,1] } },
+        { par: "18.06.01:00 Gana-Panama", stvarni: [0, 0], 	prog: { "Prenta": [2,1], "Aca": [1,1], "Nemanja": [1,0], "Suvi": [1,1], "Ivica": [2,0], "Deja": [2,1] } },
         { par: "18.06.04:00 Uzbekistan-Kolumbija", stvarni: [-1, -1], prog: { "Prenta": [0,2], "Aca": [0,1], "Nemanja": [0,1], "Suvi": [0,2], "Ivica": [1,2], "Deja": [1,0] } }
     ],
     8: [
@@ -577,58 +563,7 @@ Dnevne prognoze su vam postale pravi cirkus – dok vi optimistično tipujete na
             document.getElementById(tabId).style.display = "block";
             evt.currentTarget.classList.add('active');
         }
-window.onload = () => {
-    renderUI();
-    // Pokreni azuriranje na svakih 10 minuta
-    setInterval(azurirajRezultate, 10 * 60 * 1000);
-};
-   
-async function azurirajRezultate() {
-    // 1. Provera vremena
-    const sat = new Date().getHours();
-    if (!(sat >= 19 || sat < 7)) return;
-
-    // 2. Provera da li ima mečeva za ažuriranje
-    const imaAktivnih = utakmiceKola[TRENUTNO_KOLO].some(u => u.stvarni[0] < 0);
-    if (!imaAktivnih) return;
-
-    const apiKey = 'f0795ca90e468fc87e6d98cde0f477d7'; 
-    const url = 'https://v3.football.api-sports.io/fixtures?date=2026-06-17';
-
-    try {
-        const response = await fetch(url, {
-            headers: { 'x-apisports-key': apiKey }
-        });
-        const data = await response.json();
-        
-        // DEBUG: vidi šta API zaista vraća
-        console.log("API odgovor:", data);
-
-        data.response.forEach(match => {
-            const hName = match.teams.home.name;
-            const aName = match.teams.away.name;
-            const homeG = match.goals.home;
-            const awayG = match.goals.away;
-
-            utakmiceKola[TRENUTNO_KOLO].forEach(u => {
-                const timovi = u.par.split(" ")[1].split("-");
-                const t1 = prevodTimova[timovi[0]]; // Domaćin u tvom formatu
-                const t2 = prevodTimova[timovi[1]]; // Gost u tvom formatu
-
-                // Ako API domaćin == tvoj domaćin I API gost == tvoj gost
-                if (hName === t1 && aName === t2) {
-                    u.stvarni = [homeG, awayG];
-                } 
-                // Ako su obrnute uloge (tvoj gost je API domaćin)
-                else if (hName === t2 && aName === t1) {
-                    u.stvarni = [awayG, homeG];
-                }
-            });
-        });
-        renderUI();
-    } catch (e) { console.error("API Error:", e); }
-}
-
+        window.onload = renderUI;
     </script>
 </body>
 </html>
