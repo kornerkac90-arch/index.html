@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="sr">
 <head>
     <link rel="manifest" href="manifest.json">
@@ -582,47 +582,53 @@ window.onload = () => {
     // Pokreni azuriranje na svakih 10 minuta
     setInterval(azurirajRezultate, 10 * 60 * 1000);
 };
-        // --- API LIVE REZULTATI ---
+   
 async function azurirajRezultate() {
     // 1. Provera vremena
     const sat = new Date().getHours();
     if (!(sat >= 19 || sat < 7)) return;
 
-    // 2. Provera da li u TRENUTNO_KOLO ima aktivnih mečeva
+    // 2. Provera da li ima mečeva za ažuriranje
     const imaAktivnih = utakmiceKola[TRENUTNO_KOLO].some(u => u.stvarni[0] < 0);
     if (!imaAktivnih) return;
 
     const apiKey = 'f0795ca90e468fc87e6d98cde0f477d7'; 
-    const url = 'https://api-football-v1.p.rapidapi.com/v3/fixtures?live=all';
+    const url = 'https://v3.football.api-sports.io/fixtures?date=2026-06-17';
 
     try {
         const response = await fetch(url, {
-            headers: { 'X-RapidAPI-Key': apiKey, 'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com' }
+            headers: { 'x-apisports-key': apiKey }
         });
         const data = await response.json();
+        
+        // DEBUG: vidi šta API zaista vraća
+        console.log("API odgovor:", data);
 
         data.response.forEach(match => {
             const hName = match.teams.home.name;
+            const aName = match.teams.away.name;
             const homeG = match.goals.home;
             const awayG = match.goals.away;
 
-            // Prolazimo SAMO kroz TRENUTNO_KOLO
             utakmiceKola[TRENUTNO_KOLO].forEach(u => {
-                const timoviString = u.par.split(" ")[1]; 
-                const t1 = timoviString.split("-")[0];
-                const t2 = timoviString.split("-")[1];
+                const timovi = u.par.split(" ")[1].split("-");
+                const t1 = prevodTimova[timovi[0]]; // Domaćin u tvom formatu
+                const t2 = prevodTimova[timovi[1]]; // Gost u tvom formatu
 
-                // Proveravamo da li je to taj meč
-                if (hName === prevodTimova[t1] || hName === prevodTimova[t2]) {
-                    if (u.stvarni[0] < 0) {
-                        u.stvarni = [homeG, awayG];
-                    }
+                // Ako API domaćin == tvoj domaćin I API gost == tvoj gost
+                if (hName === t1 && aName === t2) {
+                    u.stvarni = [homeG, awayG];
+                } 
+                // Ako su obrnute uloge (tvoj gost je API domaćin)
+                else if (hName === t2 && aName === t1) {
+                    u.stvarni = [awayG, homeG];
                 }
             });
         });
-        renderUI(); // Osvazi tabelu
+        renderUI();
     } catch (e) { console.error("API Error:", e); }
 }
+
     </script>
 </body>
 </html>
