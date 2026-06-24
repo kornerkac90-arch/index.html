@@ -190,16 +190,16 @@ box { padding: 2px !important; font-size: 8px !important; }
         margin: 0 0 10px 0 !important; 
         box-sizing: border-box !important;
         height: auto !important;          /* Automatska visina prema sadržaju */
-        max-height: 400px !important;     /* Ograničenje da ne zauzme ceo ekran */
-        overflow: hidden !important;
+        max-height: none !important;     /* Ograničenje da ne zauzme ceo ekran */
+        overflow: visible !important;
         display: flex;
         flex-direction: column;
     }
 
     /* 5. Sadržaj unutar boxa dobija skrol SAMO ako pređe max-height */
     .box > div:not(h2) { 
-        overflow-y: auto !important; 
-        flex-grow: 1;
+        overflow-y: visible !important; 
+        flex-grow: 0;
         -webkit-overflow-scrolling: touch; 
     }
 
