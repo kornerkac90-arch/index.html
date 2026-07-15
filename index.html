@@ -292,7 +292,7 @@ function formatirajTim(ime) {
     
     return `${zastava} ${cistoIme}`;
 }
-        const TRENUTNO_KOLO = 31; 
+        const TRENUTNO_KOLO = 32; 
 
         const pobednikTurnira = ""; 
         const najboljiStrelac = ""; 
@@ -302,8 +302,8 @@ function formatirajTim(ime) {
     { ime: "Deja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil❌", strelac: "8x⚽️Mbappe" },
     { ime: "Prenta", progBodovi: 0, h2hBodovi: 0, tim: "Engleska", strelac: "6x⚽️Kane" },
     { ime: "Suvi", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "8x⚽️Messi" },
-    { ime: "Ivica", progBodovi: 0, h2hBodovi: 0, tim: "Francuska", strelac: "3x⚽️Gakpo ❌" },
-    { ime: "Aca", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "⚽️Yamal" },
+    { ime: "Ivica", progBodovi: 0, h2hBodovi: 0, tim: "Francuska❌", strelac: "3x⚽️Gakpo ❌" },
+    { ime: "Aca", progBodovi: 0, h2hBodovi: 0, tim: "Spanija❌", strelac: "⚽️Yamal ❌" },
     { ime: "Nemanja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil❌", strelac: "3x⚽️Ronaldo ❌" }
 ];
 
@@ -475,8 +475,10 @@ function formatirajTim(ime) {
                 { par: "15.07.21.00 Engleska-Argentina", stvarni: [-1, -1], prog: { "Prenta": [-1, -1], "SLOBODAN": [-1, -1], "Nemanja": [-1, -1], "Suvi": [-1, -1], "Ivica": [-1, -1], "Deja": [-1, -1] } }
             ],
     33: [
-                { par: "18.07.23.00 Porazeni31.-Porazeni32.", stvarni: [-1, -1], prog: { "Deja": [-1, -1], "Prenta": [-1, -1], "Suvi": [-1, -1], "Ivica": [-1, -1], "SLOBODAN": [-1, -1], "Nemanja": [-1, -1] } }
-            ]
+                { par: "18.07.23.00 Francuska-Engleska/Argentina", stvarni: [-1, -1], prog: { "Deja": [-1, -1], "Prenta": [-1, -1], "Suvi": [-1, -1], "Ivica": [-1, -1], "SLOBODAN": [-1, -1], "Nemanja": [-1, -1] } }
+            ],
+    34: [       {par: "19.07.21.00 Spanija-Engleska/Argentina", stvarni:[-1, -1], prog: {"Ivica": [-1, -1], "Prenta": [-1, -1], "Suvi": [-1, -1], "Deja": [-1, -1], "SLOBODAN": [-1, -1], "Nemanja": [-1, -1]}}
+            ]        
         };
 
         const h2hRaspored = {
@@ -512,7 +514,8 @@ function formatirajTim(ime) {
            30: [["Suvi", "Prenta"], ["SLOBODAN", "Deja"], ["Nemanja", "Ivica"]],
            31: [["Ivica", "Prenta"], ["Deja", "Nemanja"], ["Suvi", "SLOBODAN"]],
            32: [["Prenta", "SLOBODAN"], ["Nemanja", "Suvi"], ["Ivica", "Deja"]],
-           33: [["Deja", "Prenta"], ["Suvi", "Ivica"], ["SLOBODAN", "Nemanja"]]
+           33: [["Deja", "Prenta"], ["Suvi", "Ivica"], ["SLOBODAN", "Nemanja"]],
+           34: [["Ivica", "Prenta"], ["Suvi", "Deja"], ["SLOBODAN", "Nemanja"]]
         };
 
 
@@ -684,7 +687,7 @@ if(document.querySelector('.tab-btn')) document.querySelector('.tab-btn').click(
             document.getElementById('zanimljivosti').innerHTML = `
     <h2>💡 ZANIMLJIVOSTI</h2>
     <ul style="list-style:none; padding:0; font-size:11px; display:flex; flex-wrap:wrap; gap:10px;">
-        <li><b>😎 Dan 29.:</b>Napeto kao u jajima!!</ul>`;
+        <li><b>😎 Dan 32.:</b>Jos 3 utakmice do kraja, 3 prognoze, 3 h2h duela(Pentra 2), maksimalnih 33(30) poena iz prognoze, 9 iz h2h(Pentra 6), a razlika po 10 poena....Zivi su jos Pentrin Kane na 5 mestu liste stelaca da li moze medju prva 3 i da donese dodatnih 6 poena, Engleska ziva za jos 15 poena, ali samo do 23h veceras....Dejin Mbape vodi na listi strelaca i donosi mu trenutno 12 poena ....Ivica nema sanse za dodatne poene jer je Francuska ispala kao i Gakpo jos u aprilu....Suvi ako sve pogodi tacno i Spanija osvoji a Messi bude prvi strelac ima sanse za titulu, ali se to svelo na 1%, Nemanja je tu ! </ul>`;
             document.getElementById('dugorocne-lista').innerHTML = `
                 <div class="long-term-grid">
                     ${igraci.map(i => `
