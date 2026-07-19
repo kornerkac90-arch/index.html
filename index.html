@@ -244,7 +244,7 @@ box { padding: 2px !important; font-size: 8px !important; }
     <header><h1>⚽ TRIP PROGNOZERI WC 2026 🏆</h1></header>
 <!-- Šampionska sekcija --> <div id="pobednik-sekcija" style="text-align: center; margin: 40px auto; padding: 40px; border: 3px solid #FFD700; border-radius: 20px; background: linear-gradient(135deg, #2c3e50, #000); max-width: 600px; box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4);"> <h1 style="margin: 0; font-size: 2.5em; color: #FFD700; text-transform: uppercase; text-shadow: 2px 2px 4px #000; letter-spacing: 2px;">PRENTA 🏆</h1> <h2 id="ime-pobednika" style="margin: 20px 0 0 0; font-size: 4.5em; color: #FFD700; font-family: sans-serif; text-shadow: 3px 3px 6px #000; font-weight: bold;">ŠAMPION</h2> </div>
 
-<!-- Dodatna sekcija za osvajača i strelce --> <div id="statistika-kraj" style="text-align: center; margin: 20px auto; padding: 20px; border: 2px solid #DAA520; border-radius: 15px; background: rgba(0,0,0,0.6); max-width: 600px; color: #FFD700; font-family: sans-serif;"> <!-- Osvajač SP --> <div style="margin-bottom: 20px;"> <h3 style="margin: 0; font-size: 1.2em; text-transform: uppercase; color: #fff;">Osvajač Svetskog prvenstva</h3> <p style="margin: 5px 0 0 0; font-size: 2em; font-weight: bold;"></p> </div> <hr style="border: 0; border-top: 1px solid #DAA520; margin: 15px 0;"> <!-- Najbolji strelci --> <div> <h3 style="margin: 0; font-size: 1.2em; text-transform: uppercase; color: #fff;">Najbolji strelci</h3> <ol style="list-style: none; padding: 0; margin-top: 10px; font-size: 1.3em;"> <li style="margin: 5px 0;">🥇 1. Mbappe10-DEJA </li> <li style="margin: 5px 0;">🥈 2.Messi8-SUVI </li> <li style="margin: 5px 0;">🥉 3. Bellingham7</li> </ol> </div> </div>
+<!-- Dodatna sekcija za osvajača i strelce --> <div id="statistika-kraj" style="text-align: center; margin: 10px auto; padding: 3px; border: 2px solid #DAA520; border-radius: 15px; background: rgba(0,0,0,0.6); max-width: 600px; color: #FFD700; font-family: sans-serif;"> <!-- Osvajač SP --> <div style="margin-bottom: 20px;"> <h3 style="margin: 0; font-size: 1.2em; text-transform: uppercase; color: #fff;">Osvajač Svetskog prvenstva</h3> <p style="margin: 5px 0 0 0; font-size: 1em; font-weight: bold;">SPANIJA(Suvi) 🇪🇸</p> </div> <hr style="border: 0; border-top: 1px solid #DAA520; margin: 15px 0;"> <!-- Najbolji strelci --> <div> <h3 style="margin: 0; font-size: 1em; text-transform: uppercase; color: #fff;">Najbolji strelci</h3> <ol style="list-style: none; padding: 0; margin-top: 10px; font-size: 1.3em;"> <li style="margin: 5px 0;">🥇 1. Mbappe⚽️10(DEJA) </li> <li style="margin: 5px 0;">🥈 2.Messi⚽️8(SUVI) </li> <li style="margin: 5px 0;">🥉 3. Bellingham⚽️7</li> </ol> </div> </div>
     <div class="grid-container">
        <div class="box tabela">
     <h2>📊 TABELA</h2>
@@ -260,7 +260,7 @@ box { padding: 2px !important; font-size: 8px !important; }
         <tbody id="tabela-body"></tbody>
     </table>
 </div>
-        <div class="box h2h" id="h2h-box"><h2>⚔️ H2H DUELI</h2></div>
+        <div class="box h2h" id="h2h-box"><h2>⚔️ H2H DUELI</h2></div>   
         <div class="box dugorocne"><h2>🏆 DUGOROČNE PROGNOZE</h2><div id="dugorocne-lista"></div></div>
         <div class="box dnevne" id="dnevne-prognoze"><h2>⚽ DNEVNE PROGNOZE</h2></div>
         <div class="box istorija"><h2>📜 ISTORIJA PROGNOZA</h2></div>
@@ -296,14 +296,14 @@ function formatirajTim(ime) {
 }
         const TRENUTNO_KOLO = 34; 
 
-        const pobednikTurnira = ""; 
-        const najboljiStrelac = ""; 
-        const strelci2i3 = ["", ""]; 
+        const pobednikTurnira = "Spanija"; 
+        const najboljiStrelac = "Mbappe"; 
+        const strelci2i3 = ["Messi", "Bellingham"]; 
 
        const igraci = [
-    { ime: "Deja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil❌", strelac: "10x⚽️Mbappe" },
+    { ime: "Deja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil❌", strelac: "Mbappe" },
     { ime: "Prenta", progBodovi: 0, h2hBodovi: 0, tim: "Engleska❌", strelac: "6x⚽️Kane❌" },
-    { ime: "Suvi", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "8x⚽️Messi" },
+    { ime: "Suvi", progBodovi: 0, h2hBodovi: 0, tim: "Spanija", strelac: "Messi" },
     { ime: "Ivica", progBodovi: 0, h2hBodovi: 0, tim: "Francuska❌", strelac: "3x⚽️Gakpo ❌" },
     { ime: "Aca", progBodovi: 0, h2hBodovi: 0, tim: "Spanija❌", strelac: "⚽️Yamal ❌" },
     { ime: "Nemanja", progBodovi: 0, h2hBodovi: 0, tim: "Brazil❌", strelac: "3x⚽️Ronaldo ❌" }
@@ -689,7 +689,7 @@ if(document.querySelector('.tab-btn')) document.querySelector('.tab-btn').click(
             document.getElementById('zanimljivosti').innerHTML = `
     <h2>💡 ZANIMLJIVOSTI</h2>
     <ul style="list-style:none; padding:0; font-size:11px; display:flex; flex-wrap:wrap; gap:10px;">
-        <li><b>😎 Dan 32.:</b>HYDRATION BREAK!!! </ul>`;
+        <li><b>😎 Dan 34.:</b>KONACNO KRAJ. HVALA BOGU!!! </ul>`;
             document.getElementById('dugorocne-lista').innerHTML = `
                 <div class="long-term-grid">
                     ${igraci.map(i => `
